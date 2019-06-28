@@ -1,0 +1,104 @@
+<html>
+<style>
+    body {
+        width: 100%;
+        height: 100%;
+    }
+
+    select {
+        width: 200px;
+        height: 100px;
+        color: violet;
+        background-color: wheat;
+    }
+
+    div {
+        display: inline;
+    }
+
+    .col-md-1 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .col-md-2 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+
+    .col-md-3 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 45px;
+        padding-left: 45px;
+    }
+</style>
+
+<body>
+    <div>
+        <div class="col-md-1">
+            <label>First Select : </label>
+            <div class="col-md-1">
+                <select id="select_1">
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-1">
+            <label>Second Select : </label>
+            <select id="select_2">
+            </select>
+        </div>
+        <div class="col-md-1">
+            <label>Third Select : </label>
+            <select id="select_3">
+            </select>
+        </div>
+    </div>
+    <script src="jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        let orginal_list = ['apple', 'banana', 'orange'];
+        let selects = {
+            'select_1': '-1',
+            'select_2': '-1'
+        };
+        window.onload = function() {
+            drawNewSelect('select_1');
+            drawNewSelect('select_2');
+            drawNewSelect('select_3');
+        }
+
+        function drawNewSelect(select_id) {
+            $(`#${select_id}`).html('<option value="-1">Choose</option>');
+            $.each(orginal_list,function(key,value){
+                $(`#${select_id}`).append(`<option value="${key}">${value}</option>`);
+            });
+            $(`#${select_id}`).on('change', function() {
+            updateSelects(select_id);
+            updateDuplication();
+        });
+        }
+        function updateSelects(select_id) {
+            let value = $(`#${select_id}`).val();
+            selects[select_id] = value;
+            console.log(selects);
+        }
+        function updateDuplication(){
+            $.each(selects,function(key,value){
+                $(`#${key}`).children('option').show();
+                $.each(selects,function(id,value){
+                        if(id != key && value != -1){
+                            console.log([id,key]);
+                            $(`#${key}`).children(`option[value=${value}]`).hide();
+                        }
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
